@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>字符编码查询 - GB2312、UTF-8、UNICODE编码（内码或码字）在线查询</title>
+    <link href="reset.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        .wrap {
+            width: 960px;
+            margin: 0 auto;
+            padding-top: 180px;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .logo {
+            width: 333px;
+            height: 80px;
+            display: block;
+            cursor: pointer;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        .searchBox {
+            width: 420px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .warn {
+            line-height: 20px;
+            border: 1px solid #ffbe7a;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            background-color: #fffced;
+        }
+
+        .input-text {
+            background: #FFFFFF;
+            border: 1px solid #D0D0D0;
+            font-family: Verdana, Geneva, sans-serif, "宋体";
+            font-size: 12px;
+            height: 18px;
+            margin: 0 5px 0 0;
+            padding: 2px 0 2px 5px;
+            vertical-align: middle;
+            width: 332px;
+        }
+
+        .button {
+            /*普通灰底*/
+            background: none repeat scroll 0 0 #DDDDDD;
+            border-color: -moz-use-text-color #666666 #666666 -moz-use-text-color;
+            border-style: none solid solid none;
+            border-width: 0 1px 1px 0;
+            height: 24px;
+            padding: 3px 6px;
+            font-family: "宋体", Verdana, Geneva, sans-serif;
+            cursor: pointer;
+        }
+
+        .res {
+            margin-top: 10px;
+        }
+
+        .res td {
+            border: 1px solid #d3e7ff;
+            padding: 0 4px;
+            height: 26px;
+            line-height: 24px;
+        }
+
+        .res_title {
+            color: #002f4d;
+            line-height: 24px;
+            font-size: 12px;
+        }
+
+        .td_title {
+            background-color: #EEF3F7;
+            height: 30px;
+            line-height: 30px;
+            color: #666;
+        }
+
+        .somsg {
+            font-weight: normal;
+            color: #F00;
+        }
+
+        .copy {
+            text-align: center;
+            color: #999;
+            margin-top: 30px;
+            line-height: 20px;
+        }
+
+        .copy a {
+            color: #666;
+        }
+
+        h1 {
+            font-size: 13px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrap">
+    <div class="searchBox">
+        <h1>字符编码查询 - GB2312、UTF-8、UNICODE编码（内码或码字）在线查询</h1>
+        <!--<h1 style="text-align: right;"><a href="http://cnblogs.com/human">http://cnblogs.com/human</a></h1>-->
+
+        <div class="warn">
+            <input id="word" type="text" class="input-text" name="">
+            <input type="button" class="button" value="查询" name="" id="search">
+        </div>
+        <div id="result" class="res" style="display:none;">
+            <h3 class="res_title">查询结果：<span class="somsg" id="result_text"></span></h3>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="res_td" style="display:none;">
+                <tr class="td_title">
+                    <td width="26%">编码类型</td>
+                    <td width="49%">二进制编码</td>
+                    <td width="25%">十六进制编码</td>
+                </tr>
+                <tr>
+                    <td>Unicode</td>
+                    <td id="uni_2">&nbsp;</td>
+                    <td id="uni_16">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>UTF-8</td>
+                    <td id="utf_2">&nbsp;</td>
+                    <td id="utf_16">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>GB2312</td>
+                    <td id="gb_2">&nbsp;</td>
+                    <td id="gb_16">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+        <div class="copy">
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="jquery-1.9.1.js"></script>
+<script type="text/javascript">
+
+    /**
+     *  humanhuang
+     *  http://www.cnblogs.com/human
+     */
+
+    (function (win, undefined) {
+        function gen() {
+            return Math.random().toString(16).substr(2);
+        }
+
+        var doc = document,
+                isInit = false,
+                iframe, form, input, iframeId;
+        win.encodeToGBK = function (str, callback) {
+            if (isInit == false) {
+                createIframe();
+                createForm();
+                isInit = true;
+            }
+            input.value = str || '';
+            iframe.onload = function () {
+                var ret = iframe.contentWindow.document.location.search.split('=')[1];
+                callback && callback(ret);
+            }
+            form.submit();
+        }
+        function createIframe() {
+            iframeId = gen();
+            iframe = doc.createElement('iframe');
+            iframe.id = iframeId;
+            iframe.name = iframeId;
+            iframe.charset = 'GBK';
+//            iframe.src='about:blank';
+            iframe.style.display = 'none';
+
+            doc.body.appendChild(iframe);
+
+            iframe.contentWindow.document.characterSet = 'GBK';
+
+//            if (!doc.querySelector) { // hack for IE 6&7
+//                win.frames[iframeId].name = iframeId;
+//            }
+        }
+
+        function createForm() {
+            form = doc.createElement('form');
+            form.method = 'get';
+            form.target = iframeId;
+            form.style.display = 'none';
+            form.acceptCharset = "GBK";
+            input = doc.createElement('input');
+            input.type = 'text';
+            input.name = 'q';
+            form.appendChild(input);
+            doc.body.appendChild(form);
+        }
+
+    })(window);
+
+    $.each("uni_2 uni_16 utf_2 utf_16 gb_2 gb_16".split(' '), function (i, item) {
+        window['$' + item] = $('#' + item);
+    });
+
+    var $container = $('#result');
+    var $table = $('#res_td');
+    var $result_text = $('#result_text');
+    var $word =  $('#word');
+    var $search = $("#search");
+
+    $('#word').keypress(function(e){
+       if(13 == e.which){
+           $search.click();
+           e.preventDefault();
+       }
+
+    });
+
+    function reverseString(strr) {
+        return Array.prototype.reverse.call(strr.split('')).join('');
+    }
+
+    function formatBin2(strbin2) {
+
+        var reverseStr = reverseString(strbin2);
+        reverseStr = reverseStr.replace(/(\d{8})/g, '$1 ');
+        strbin2 = reverseString(reverseStr);
+        strbin2 = strbin2.replace(/^\s+|\s+$/g, '');
+
+        if (strbin2.length % 8 == 0) {
+            return strbin2;
+        }
+
+        var ret = [];
+        $.each(strbin2.split(' '), function (i, item) {
+            if (item.length != 8) {
+                item = '0' + item;
+            }
+            ret.push(item);
+        });
+        return ret.join(' ');
+    }
+
+    $search.click(function () {
+        var val = $word.val();
+
+        if (val.length != 1) {
+            $table.hide();
+            $container.show();
+            $result_text.text('只支持单个中文查询！');
+        } else {
+
+            window.isIE = document.all && !window.atob;
+
+
+            $container.is(':visible') || $container.show();
+            $table.show();
+            $result_text.hide();
+            var unicode10 = val.charCodeAt(0);
+            var unicode2 = unicode10.toString(2);
+            var unicode16 = unicode10.toString(16).toUpperCase();
+
+            var utf8_16 = encodeURIComponent(val).replace(/%/g, '');
+            var utf8_2 = parseInt(utf8_16, 16).toString(2);
+
+            $uni_2.text(formatBin2(unicode2));
+            $uni_16.text('0x' + unicode16);
+
+            $utf_2.text(formatBin2(utf8_2));
+            $utf_16.text('0x' + utf8_16);
+
+
+            if (isIE == true) {
+                var data = {
+                    q: val
+                }
+
+                $.getJSON('convert.php', data, function (ret) {
+                    var gbkCode = ret.gbk;
+                    $gb_2.text(formatBin2(parseInt(gbkCode, 16).toString(2)));
+                    $gb_16.text('0x' + gbkCode.toUpperCase());
+                });
+            } else {
+                encodeToGBK(val, function (ret) {
+                    ret = ret.replace(/%/g, '');
+                    $gb_2.text(formatBin2(parseInt(ret, 16).toString(2)));
+                    $gb_16.text('0x' + ret.toUpperCase());
+                });
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>
